@@ -65,7 +65,7 @@ export default function Home() {
         { text: "سامانه سادا", href: "https://sada.guilan.ac.ir/", icon: ExternalLink },
         { text: "سامانه ایسنت", href: "https://ecent2.guilan.ac.ir/", icon: ExternalLink },
         { text: "سایت سماد (سلف)", href: "https://food.guilan.ac.ir/index.rose", icon: ExternalLink },
-        { text: "صندوق رفاه دانشجویان", href: "https://bp.swf.ir/", icon: ExternalLink },
+        { text: "صندوق رفاه دانشجویان", href: "https://swf.ir/fa", icon: ExternalLink },
       ],
     },
     {
