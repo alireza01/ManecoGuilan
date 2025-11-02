@@ -15,13 +15,74 @@ svg {
   max-width: 100%;
 }
 
-/* GPU Acceleration for Animations */
-.hover\:-translate-y-1:hover,
-.hover\:-translate-y-2:hover,
-.group-hover\:scale-110:hover,
-.group-hover\:scale-105:hover,
-.group-hover\:translate-x-1:hover {
-  will-change: transform;
+/* Optimize rendering performance */
+.card-hover,
+.animate-fade-in-scale {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 300px;
+}
+
+/* Optimize box rendering */
+.box-container {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 250px;
+}
+
+/* Reduce layout shifts */
+img {
+  height: auto;
+}
+
+/* Optimize font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+/* Prevent unnecessary repaints on mobile */
+@media (hover: none) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+/* GPU Acceleration for Animations - Only on devices that support hover */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+
+  .hover\:-translate-y-1:hover,
+  .hover\:-translate-y-2:hover,
+  .group-hover\:scale-110:hover,
+  .group-hover\:scale-105:hover,
+  .group-hover\:translate-x-1:hover {
+    will-change: transform;
+  }
+}
+
+/* Disable heavy animations on mobile and for users who prefer reduced motion */
+@media (hover: none) or (prefers-reduced-motion: reduce) {
+
+  .animate-float,
+  .animate-gradient,
+  .shimmer {
+    animation: none !important;
+  }
+
+  /* Disable all hover effects on mobile */
+  *:hover {
+    transform: none !important;
+  }
+
+  /* Reduce blur effects on mobile for better performance */
+  .blur-3xl,
+  .blur-2xl {
+    filter: blur(20px) !important;
+  }
 }
 
 /* Custom Scrollbar */
@@ -48,10 +109,22 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Smooth Transitions */
-a,
-button {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Smooth Transitions - Only on capable devices */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+
+  a,
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Instant feedback on mobile */
+@media (hover: none) {
+
+  a:active,
+  button:active {
+    opacity: 0.7;
+  }
 }
 
 /* Advanced Animations */
@@ -115,6 +188,19 @@ button {
   }
 }
 
+/* Optimize float animation */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@media (hover: none) or (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none;
+  }
+}
+
 @keyframes pulse-glow {
 
   0%,
@@ -150,23 +236,19 @@ button {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.8s ease-out;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .animate-fade-in-scale {
-  animation: fadeInScale 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.6s ease-out;
+  animation: slideInRight 0.5s ease-out;
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.6s ease-out;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: slideInLeft 0.5s ease-out;
 }
 
 .animate-pulse-glow {
@@ -175,32 +257,38 @@ button {
 
 .animate-gradient {
   background-size: 200% 200%;
-  animation: gradient-shift 5s ease infinite;
+}
+
+/* Only animate gradient on desktop with no reduced motion preference */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .animate-gradient {
+    animation: gradient-shift 5s ease infinite;
+  }
 }
 
 /* Stagger Animation Delays */
 .stagger-1 {
-  animation-delay: 0.1s;
+  animation-delay: 0.05s;
 }
 
 .stagger-2 {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 
 .stagger-3 {
-  animation-delay: 0.3s;
+  animation-delay: 0.15s;
 }
 
 .stagger-4 {
-  animation-delay: 0.4s;
+  animation-delay: 0.2s;
 }
 
 .stagger-5 {
-  animation-delay: 0.5s;
+  animation-delay: 0.25s;
 }
 
 .stagger-6 {
-  animation-delay: 0.6s;
+  animation-delay: 0.3s;
 }
 
 /* Glass Morphism Effect */
@@ -223,14 +311,30 @@ button {
   animation: shimmer 2s infinite;
 }
 
-/* Card Hover Effects */
-.card-hover {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/* Card Hover Effects - Only on desktop */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
 }
 
-.card-hover:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+/* Mobile: Simple tap feedback - instant and lightweight */
+@media (hover: none) {
+  .card-hover:active {
+    opacity: 0.9;
+    transition: opacity 0.05s;
+  }
+
+  /* Faster transitions on mobile */
+  a,
+  button {
+    transition: opacity 0.1s ease;
+  }
 }
 
 /* Text Gradient */
@@ -257,4 +361,134 @@ button {
 .fade-in-section.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Premium Box Animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    filter: blur(8px);
+  }
+
+  50% {
+    opacity: 0.9;
+    filter: blur(12px);
+  }
+}
+
+@keyframes border-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.5),
+      0 0 40px rgba(250, 204, 21, 0.3),
+      inset 0 0 20px rgba(250, 204, 21, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(250, 204, 21, 0.7),
+      0 0 60px rgba(250, 204, 21, 0.5),
+      inset 0 0 30px rgba(250, 204, 21, 0.2);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-border-glow {
+  animation: border-glow 2s ease-in-out infinite;
+}
+
+/* Disable premium animations on low-end devices */
+@media (hover: none) or (prefers-reduced-motion: reduce) {
+
+  .animate-spin-slow,
+  .animate-glow-pulse,
+  .animate-border-glow {
+    animation: none !important;
+  }
+}
+
+/* Featured Box Animations - Border Laser Effect */
+@keyframes border-laser {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.featured-box-special {
+  position: relative;
+}
+
+.featured-box-special::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 1.125rem;
+  padding: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.4),
+    transparent,
+    transparent
+  );
+  background-size: 200% 200%;
+  animation: border-laser 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.featured-box-special::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
+              inset 0 0 20px rgba(255, 255, 255, 0.1);
+  animation: glow-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Keep animations on mobile but reduce if user prefers */
+@media (prefers-reduced-motion: reduce) {
+  .featured-box-special::before,
+  .featured-box-special::after {
+    animation: none !important;
+  }
 }

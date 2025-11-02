@@ -2,33 +2,62 @@
 
 import Image from 'next/image';
 import { BookOpen, Video, FileText, ExternalLink, Send, MessageCircle, Download, Building2, Users, ShoppingCart, GraduationCap, ChevronLeft, Newspaper } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import CommunicationSection from './components/CommunicationSection';
+import { useEffect, useState, useMemo, lazy, Suspense } from 'react';
+
+const CommunicationSection = lazy(() => import('./components/CommunicationSection'));
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [enableHeavyAnimations, setEnableHeavyAnimations] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState<Array<{left: string, top: string, delay: string, duration: string}>>([]);
 
   useEffect(() => {
     setIsLoaded(true);
-    
-    // Generate particles only on client side
-    const generatedParticles = Array.from({ length: 20 }, () => ({
+
+    // Comprehensive device capability check
+    const supportsHover = window.matchMedia('(hover: hover)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowEndDevice = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false;
+    const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // Check connection speed (with type safety)
+    const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+    const isSlowConnection = connection ?
+      (connection.effectiveType === 'slow-2g' ||
+        connection.effectiveType === '2g' ||
+        connection.effectiveType === '3g') : false;
+
+    // Only enable heavy animations on capable desktop devices with good connection
+    const shouldEnableAnimations = supportsHover &&
+      !prefersReducedMotion &&
+      !isLowEndDevice &&
+      !isMobile &&
+      !isSlowConnection;
+
+    setEnableHeavyAnimations(shouldEnableAnimations);
+
+    if (shouldEnableAnimations) {
+      const handleMouseMove = (e: MouseEvent) => {
+        requestAnimationFrame(() => {
+          setMousePosition({ x: e.clientX, y: e.clientY });
+        });
+      };
+
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, []);
+
+  // Memoize particles to prevent recalculation - only generate when needed
+  const particles = useMemo(() => {
+    if (!enableHeavyAnimations) return [];
+    return Array.from({ length: 3 }, () => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      delay: `${Math.random() * 3}s`,
-      duration: `${3 + Math.random() * 4}s`
+      delay: `${Math.random() * 2}s`,
+      duration: `${4 + Math.random() * 2}s`
     }));
-    setParticles(generatedParticles);
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [enableHeavyAnimations]);
   const sections = [
     {
       title: "کتابچه‌ی طبقه دوم",
@@ -36,6 +65,15 @@ export default function Home() {
       icon: BookOpen,
       links: [
         { text: "مشاهده و دانلود کتابچه", href: "/ویژه‌نامه چشم‌انداز - کتابچه طبقه‌ دوم.pdf", icon: Download },
+      ],
+    },
+    {
+      title: "نشریه دانشجویی چشم‌انداز",
+      bgColor: "bg-gradient-to-br from-rose-600 to-rose-700",
+      icon: Newspaper,
+      links: [
+        { text: "کانال تلگرام", href: "https://t.me/Cheshmandaz_GU", icon: Send },
+        { text: "اینستاگرام", href: "https://www.instagram.com/cheshmandaz_gu", icon: MessageCircle },
       ],
     },
     {
@@ -69,15 +107,6 @@ export default function Home() {
       ],
     },
     {
-      title: "نشریه دانشجویی چشم‌انداز",
-      bgColor: "bg-gradient-to-br from-rose-600 to-rose-700",
-      icon: Newspaper,
-      links: [
-        { text: "کانال تلگرام", href: "https://t.me/Cheshmandaz_GU", icon: Send },
-        { text: "اینستاگرام", href: "https://www.instagram.com/cheshmandaz_gu", icon: MessageCircle },
-      ],
-    },
-    {
       title: "گروه‌ها و چنل‌های تلگرام دانشگاه",
       bgColor: "bg-gradient-to-br from-teal-600 to-teal-700",
       icon: Users,
@@ -94,60 +123,71 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 relative overflow-hidden">
-      {/* Animated Background Elements */}
+      {/* Animated Background Elements - Only on capable devices */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div 
-          className="absolute w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-float"
+        <div
+          className={`absolute w-96 h-96 bg-blue-400/10 rounded-full blur-3xl ${enableHeavyAnimations ? 'animate-float' : ''}`}
           style={{
             top: '10%',
             right: '10%',
             animationDelay: '0s'
           }}
         />
-        <div 
-          className="absolute w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-float"
+        <div
+          className={`absolute w-96 h-96 bg-purple-400/10 rounded-full blur-3xl ${enableHeavyAnimations ? 'animate-float' : ''}`}
           style={{
             bottom: '10%',
             left: '10%',
             animationDelay: '2s'
           }}
         />
-        <div 
-          className="absolute w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl animate-float"
-          style={{
-            top: '50%',
-            left: '50%',
-            animationDelay: '1s'
-          }}
-        />
+        {enableHeavyAnimations && (
+          <div
+            className="absolute w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl animate-float"
+            style={{
+              top: '50%',
+              left: '50%',
+              animationDelay: '1s'
+            }}
+          />
+        )}
       </div>
 
-      {/* Mouse Follower Effect */}
-      <div 
-        className="fixed w-96 h-96 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-full blur-3xl pointer-events-none transition-all duration-1000 ease-out"
-        style={{
-          left: mousePosition.x - 192,
-          top: mousePosition.y - 192,
-        }}
-      />
-      
+      {/* Mouse Follower Effect - Only on desktop with hover */}
+      {enableHeavyAnimations && (
+        <div
+          className="fixed w-96 h-96 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-full blur-3xl pointer-events-none transition-all duration-1000 ease-out"
+          style={{
+            left: mousePosition.x - 192,
+            top: mousePosition.y - 192,
+          }}
+        />
+      )}
+
       {/* Header with Image */}
       <div className="relative w-full h-72 md:h-96 overflow-hidden">
-        <Image 
-          src="/header.png" 
-          alt="دانشکده مدیریت و اقتصاد - دانشگاه گیلان" 
+        <Image
+          src="/header.png"
+          alt="دانشکده مدیریت و اقتصاد - دانشگاه گیلان"
           fill
           priority
-          quality={90}
-          sizes="100vw"
-          className="object-cover object-top transition-transform duration-700 hover:scale-105"
+          quality={60}
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 1920px"
+          className="object-cover object-top"
+          style={{
+            transition: enableHeavyAnimations ? 'transform 0.7s ease' : 'none',
+            willChange: enableHeavyAnimations ? 'transform' : 'auto'
+          }}
+          onMouseEnter={(e) => enableHeavyAnimations && (e.currentTarget.style.transform = 'scale(1.05)')}
+          onMouseLeave={(e) => enableHeavyAnimations && (e.currentTarget.style.transform = 'scale(1)')}
+          loading="eager"
         />
         {/* Enhanced Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20"></div>
-        
-        {/* Animated Particles */}
-        {particles.length > 0 && (
+
+        {/* Animated Particles - Only on desktop */}
+        {enableHeavyAnimations && particles.length > 0 && (
           <div className="absolute inset-0">
             {particles.map((particle, i) => (
               <div
@@ -163,7 +203,7 @@ export default function Home() {
             ))}
           </div>
         )}
-        
+
         {/* Text Content */}
         <div className="absolute inset-0 flex items-end justify-center pb-8 md:pb-12">
           <div className="text-center">
@@ -185,48 +225,53 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sections.map((section, index) => {
             const IconComponent = section.icon;
+            const isFeatured = index === 0 || index === 1;
             return (
               <div
                 key={index}
-                className={`${section.bgColor} animate-gradient text-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 card-hover relative overflow-hidden group ${isLoaded ? `animate-fade-in-scale stagger-${(index % 6) + 1}` : 'opacity-0'}`}
+                className={`box-container ${isLoaded ? `animate-fade-in-scale stagger-${(index % 6) + 1}` : 'opacity-0'} ${enableHeavyAnimations ? 'hover:-translate-y-2' : ''} transition-all duration-300`}
                 style={{
                   animationFillMode: 'both'
                 }}
               >
-                {/* Shimmer Effect on Hover */}
-                <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                {/* Content */}
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="bg-white/20 p-3 rounded-xl group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                      <IconComponent className="w-8 h-8 opacity-90" />
-                    </div>
-                    <h2 className="text-lg md:text-xl font-bold group-hover:scale-105 transition-transform duration-300">
-                      {section.title}
-                    </h2>
-                  </div>
-                  <ul className="space-y-3">
-                    {section.links.map((link, linkIndex) => {
-                      const LinkIcon = link.icon;
-                      return (
-                        <li key={linkIndex} className="animate-slide-in-right" style={{ animationDelay: `${linkIndex * 0.1}s`, animationFillMode: 'both' }}>
-                          <a
-                            href={link.href}
-                            className="group/link flex items-center justify-between gap-3 bg-white/10 hover:bg-white/25 backdrop-blur-sm rounded-xl px-4 py-3 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-white/0 hover:border-white/20"
-                          >
-                            <LinkIcon className="w-5 h-5 flex-shrink-0 opacity-90 group-hover/link:scale-125 group-hover/link:rotate-12 transition-all duration-300" />
-                            <span className="text-sm md:text-base flex-1 text-right font-medium">{link.text}</span>
-                            <ChevronLeft className="w-4 h-4 opacity-60 group-hover/link:opacity-100 group-hover/link:-translate-x-2 transition-all duration-300" />
-                          </a>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
+                <div className={`${isFeatured ? 'featured-box-special' : ''} ${section.bgColor} ${enableHeavyAnimations ? 'animate-gradient' : ''} text-white rounded-2xl p-6 shadow-xl transition-all duration-300 ${enableHeavyAnimations ? 'hover:shadow-2xl' : 'active:opacity-90'} relative group h-full overflow-hidden`}>
+                  {/* Shimmer Effect on Hover - Desktop only */}
+                  {enableHeavyAnimations && (
+                    <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                  )}
 
-                {/* Decorative Corner Element */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-5">
+                      <div className={`bg-white/20 p-3 rounded-xl transition-all duration-300 ${enableHeavyAnimations ? 'group-hover:scale-110 group-hover:rotate-12' : ''}`}>
+                        <IconComponent className="w-8 h-8 opacity-90" />
+                      </div>
+                      <h2 className={`text-lg md:text-xl font-bold transition-transform duration-300 ${enableHeavyAnimations ? 'group-hover:scale-105' : ''}`}>
+                        {section.title}
+                      </h2>
+                    </div>
+                    <ul className="space-y-3">
+                      {section.links.map((link, linkIndex) => {
+                        const LinkIcon = link.icon;
+                        return (
+                          <li key={linkIndex} className="animate-slide-in-right" style={{ animationDelay: `${linkIndex * 0.1}s`, animationFillMode: 'both' }}>
+                            <a
+                              href={link.href}
+                              className={`group/link flex items-center justify-between gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 transition-all duration-200 border border-white/0 ${enableHeavyAnimations ? 'hover:bg-white/25 hover:scale-105 hover:shadow-lg hover:border-white/20' : 'active:bg-white/20'}`}
+                            >
+                              <LinkIcon className={`w-5 h-5 flex-shrink-0 opacity-90 transition-all duration-300 ${enableHeavyAnimations ? 'group-hover/link:scale-125 group-hover/link:rotate-12' : ''}`} />
+                              <span className="text-sm md:text-base flex-1 text-right font-medium">{link.text}</span>
+                              <ChevronLeft className={`w-4 h-4 opacity-60 transition-all duration-300 ${enableHeavyAnimations ? 'group-hover/link:opacity-100 group-hover/link:-translate-x-2' : ''}`} />
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  {/* Decorative Corner Element */}
+                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                </div>
               </div>
             );
           })}
@@ -234,7 +279,9 @@ export default function Home() {
 
         {/* Communication Section Cards - Separate Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-          <CommunicationSection isLoaded={isLoaded} />
+          <Suspense fallback={<div className="col-span-full h-32"></div>}>
+            <CommunicationSection isLoaded={isLoaded} enableHeavyAnimations={enableHeavyAnimations} />
+          </Suspense>
         </div>
       </div>
 
@@ -245,7 +292,7 @@ export default function Home() {
           <div className="absolute w-64 h-64 bg-blue-500 rounded-full blur-3xl animate-float" style={{ top: '-50%', right: '10%' }}></div>
           <div className="absolute w-64 h-64 bg-purple-500 rounded-full blur-3xl animate-float" style={{ bottom: '-50%', left: '10%', animationDelay: '1s' }}></div>
         </div>
-        
+
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="animate-fade-in">
             <div className="inline-block mb-4">
