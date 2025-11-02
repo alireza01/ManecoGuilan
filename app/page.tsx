@@ -64,7 +64,7 @@ export default function Home() {
       bgColor: "bg-gradient-to-br from-emerald-600 to-emerald-700",
       icon: BookOpen,
       links: [
-        { text: "مشاهده و دانلود کتابچه", href: "/ویژه‌نامه چشم‌انداز - کتابچه طبقه‌ دوم.pdf", icon: Download },
+        { text: "مشاهده و دانلود کتابچه", href: "/ویژه‌نامه چشم‌انداز - کتابچه طبقه‌ دوم.pdf", icon: Download, animation: "btn-attention-bounce" },
       ],
     },
     {
@@ -72,8 +72,8 @@ export default function Home() {
       bgColor: "bg-gradient-to-br from-rose-600 to-rose-700",
       icon: Newspaper,
       links: [
-        { text: "کانال تلگرام", href: "https://t.me/Cheshmandaz_GU", icon: Send },
-        { text: "اینستاگرام", href: "https://www.instagram.com/cheshmandaz_gu", icon: MessageCircle },
+        { text: "کانال تلگرام", href: "https://t.me/Cheshmandaz_GU", icon: Send, animation: "btn-attention-pulse" },
+        { text: "اینستاگرام", href: "https://www.instagram.com/cheshmandaz_gu", icon: MessageCircle, animation: "btn-attention-pulse" },
       ],
     },
     {
@@ -81,7 +81,7 @@ export default function Home() {
       bgColor: "bg-gradient-to-br from-cyan-500 to-cyan-600",
       icon: Video,
       links: [
-        { text: "مشاهده ویدیو آموزشی", href: "https://www.aparat.com/v/g69a54m", icon: ExternalLink },
+        { text: "مشاهده ویدیو آموزشی", href: "https://www.aparat.com/v/g69a54m", icon: ExternalLink, animation: "" },
       ],
     },
     {
@@ -89,10 +89,10 @@ export default function Home() {
       bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
       icon: FileText,
       links: [
-        { text: "مدیریت صنعتی", href: "/industrial-management.jpg", icon: Download },
-        { text: "مدیریت بازرگانی", href: "/bussines-management.jpg", icon: Download },
-        { text: "اقتصاد", href: "/economics.jpg", icon: Download },
-        { text: "حسابداری", href: "/accounting.jpg", icon: Download },
+        { text: "مدیریت صنعتی", href: "/industrial-management.jpg", icon: Download, animation: "" },
+        { text: "مدیریت بازرگانی", href: "/bussines-management.jpg", icon: Download, animation: "" },
+        { text: "اقتصاد", href: "/economics.jpg", icon: Download, animation: "" },
+        { text: "حسابداری", href: "/accounting.jpg", icon: Download, animation: "" },
       ],
     },
     {
@@ -100,10 +100,10 @@ export default function Home() {
       bgColor: "bg-gradient-to-br from-orange-500 to-orange-600",
       icon: Building2,
       links: [
-        { text: "سامانه سادا", href: "https://sada.guilan.ac.ir/", icon: ExternalLink },
-        { text: "سامانه ایسنت", href: "https://ecent2.guilan.ac.ir/", icon: ExternalLink },
-        { text: "سایت سماد (سلف)", href: "https://food.guilan.ac.ir/index.rose", icon: ExternalLink },
-        { text: "صندوق رفاه دانشجویان", href: "https://swf.ir/fa", icon: ExternalLink },
+        { text: "سامانه سادا", href: "https://sada.guilan.ac.ir/", icon: ExternalLink, animation: "" },
+        { text: "سامانه ایسنت", href: "https://ecent2.guilan.ac.ir/", icon: ExternalLink, animation: "" },
+        { text: "سایت سماد (سلف)", href: "https://food.guilan.ac.ir/index.rose", icon: ExternalLink, animation: "" },
+        { text: "صندوق رفاه دانشجویان", href: "https://swf.ir/fa", icon: ExternalLink, animation: "" },
       ],
     },
     {
@@ -111,11 +111,11 @@ export default function Home() {
       bgColor: "bg-gradient-to-br from-teal-600 to-teal-700",
       icon: Users,
       links: [
-        { text: "گروه شورای صنفی", href: "https://t.me/goftegooshorasenfi", icon: Send },
-        { text: "گیلان بوک (خرید و فروش کتاب)", href: "https://t.me/+FE_36sMKaX04OTU0", icon: ShoppingCart },
-        { text: "گروه دانشجویان مدیریت - اقتصاد - حسابداری", href: "https://t.me/+oPeMzrn7dYYyMDNk", icon: GraduationCap },
-        { text: "آشنایی با اساتید (استادیاب)", href: "https://t.me/guilan_ostad", icon: Users },
-        { text: "اساتید دانشکده مدیریت و اقتصاد", href: "https://guilan.ac.ir/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A6%D8%AA-%D8%B9%D9%84%D9%85%DB%8C?p_p_id=ir_sain_university_people_UniversityFacultyListPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_ir_sain_university_people_UniversityFacultyListPortlet_universityDepartmentId=12908446", icon: ExternalLink },
+        { text: "گروه شورای صنفی", href: "https://t.me/goftegooshorasenfi", icon: Send, animation: "" },
+        { text: "گیلان بوک (خرید و فروش کتاب)", href: "https://t.me/+FE_36sMKaX04OTU0", icon: ShoppingCart, animation: "" },
+        { text: "گروه دانشجویان مدیریت - اقتصاد - حسابداری", href: "https://t.me/+oPeMzrn7dYYyMDNk", icon: GraduationCap, animation: "" },
+        { text: "آشنایی با اساتید (استادیاب)", href: "https://t.me/guilan_ostad", icon: Users, animation: "" },
+        { text: "اساتید دانشکده مدیریت و اقتصاد", href: "https://guilan.ac.ir/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A6%D8%AA-%D8%B9%D9%84%D9%85%DB%8C?p_p_id=ir_sain_university_people_UniversityFacultyListPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_ir_sain_university_people_UniversityFacultyListPortlet_universityDepartmentId=12908446", icon: ExternalLink, animation: "" },
       ],
     },
 
@@ -257,7 +257,7 @@ export default function Home() {
                           <li key={linkIndex} className="animate-slide-in-right" style={{ animationDelay: `${linkIndex * 0.1}s`, animationFillMode: 'both' }}>
                             <a
                               href={link.href}
-                              className={`group/link flex items-center justify-between gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 transition-all duration-200 border border-white/0 ${enableHeavyAnimations ? 'hover:bg-white/25 hover:scale-105 hover:shadow-lg hover:border-white/20' : 'active:bg-white/20'}`}
+                              className={`group/link flex items-center justify-between gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 transition-all duration-200 border border-white/0 ${link.animation || ''} ${enableHeavyAnimations ? 'hover:bg-white/25 hover:scale-105 hover:shadow-lg hover:border-white/20' : 'active:bg-white/20'}`}
                             >
                               <LinkIcon className={`w-5 h-5 flex-shrink-0 opacity-90 transition-all duration-300 ${enableHeavyAnimations ? 'group-hover/link:scale-125 group-hover/link:rotate-12' : ''}`} />
                               <span className="text-sm md:text-base flex-1 text-right font-medium">{link.text}</span>

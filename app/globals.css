@@ -431,15 +431,19 @@ html {
   0% {
     background-position: 0% 0%;
   }
+
   100% {
     background-position: 200% 200%;
   }
 }
 
 @keyframes glow-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.6;
   }
+
   50% {
     opacity: 1;
   }
@@ -455,15 +459,13 @@ html {
   inset: -3px;
   border-radius: 1.125rem;
   padding: 3px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    transparent,
-    rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0.4),
-    transparent,
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      transparent,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.4),
+      transparent,
+      transparent);
   background-size: 200% 200%;
   animation: border-laser 3s linear infinite;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -480,15 +482,128 @@ html {
   inset: 0;
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
-              inset 0 0 20px rgba(255, 255, 255, 0.1);
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
   animation: glow-pulse 2s ease-in-out infinite;
   pointer-events: none;
 }
 
 /* Keep animations on mobile but reduce if user prefers */
 @media (prefers-reduced-motion: reduce) {
+
   .featured-box-special::before,
   .featured-box-special::after {
+    animation: none !important;
+  }
+}
+
+/* Button Attention Animations */
+@keyframes attention-shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-3px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes attention-bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes attention-pulse-scale {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes attention-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3),
+      0 0 20px rgba(255, 255, 255, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 40px rgba(255, 255, 255, 0.4),
+      0 0 60px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes attention-wiggle {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-3deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Button automatic animations - always running */
+.btn-attention-shake {
+  animation: attention-shake 2s ease-in-out infinite;
+}
+
+.btn-attention-bounce {
+  animation: attention-bounce 1.5s ease-in-out infinite;
+}
+
+.btn-attention-pulse {
+  animation: attention-pulse-scale 1.5s ease-in-out infinite;
+}
+
+.btn-attention-glow {
+  animation: attention-glow 2s ease-in-out infinite;
+}
+
+.btn-attention-wiggle {
+  animation: attention-wiggle 1.5s ease-in-out infinite;
+}
+
+/* Only disable if user explicitly prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  .btn-attention-shake,
+  .btn-attention-bounce,
+  .btn-attention-pulse,
+  .btn-attention-glow,
+  .btn-attention-wiggle {
     animation: none !important;
   }
 }
