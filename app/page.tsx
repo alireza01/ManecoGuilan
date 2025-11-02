@@ -21,7 +21,13 @@ export default function Home() {
     const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     // Check connection speed (with type safety)
-    const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+    interface NavigatorWithConnection extends Navigator {
+      connection?: { effectiveType?: string };
+      mozConnection?: { effectiveType?: string };
+      webkitConnection?: { effectiveType?: string };
+    }
+    const nav = navigator as NavigatorWithConnection;
+    const connection = nav.connection || nav.mozConnection || nav.webkitConnection;
     const isSlowConnection = connection ?
       (connection.effectiveType === 'slow-2g' ||
         connection.effectiveType === '2g' ||
